@@ -8,7 +8,7 @@
 
 ### Syntax
 
-The syntax is largely based on CoffeeScript, with some elements from Ruby, Python, and other languages.
+The syntax is largely based on CoffeeScript, with some elements from Ruby, Python, Cheddar, and other languages.
 
 <!-- language-all: lang-js -->
 
@@ -68,12 +68,12 @@ The syntax is largely based on CoffeeScript, with some elements from Ruby, Pytho
     "abc".class  ## -> "String"
     'abc'.class  ## -> "String"
     
-    ## You can do string interpolation in single-quote strings:
-    '2 + 2 = #{ 2 + 2 }'  ## -> "2 + 2 = 4"
+    ## You can do string interpolation in double-quote strings:
+    "2 + 2 = #{ 2 + 2 }"  ## -> "2 + 2 = 4"
     
-    ## To avoid string interpolation, use a backslash or double-quote string:
-    '2 + 2 = \#{ 2 + 2 }' ## -> "2 + 2 = #{ 2 + 2 }"
-    "2 + 2 = #{ 2 + 2 }"  ## -> "2 + 2 = #{ 2 + 2 }"
+    ## To avoid string interpolation, use a backslash or single-quote string:
+    "2 + 2 = \#{ 2 + 2 }" ## -> "2 + 2 = #{ 2 + 2 }"
+    '2 + 2 = #{ 2 + 2 }'  ## -> "2 + 2 = #{ 2 + 2 }"
     
     
     ######## Chars ########
@@ -337,9 +337,9 @@ The syntax is largely based on CoffeeScript, with some elements from Ruby, Pytho
 |---      |---|---|---|---|---|---|
 |`2`      |`4`|`0+4i`|`"abcabc"`|`"aa"`|`[1,2,3,1,2,3]`|`3`?|
 |`2i`     |`0+4i`|`-4`|???|???|`[0+1i,1,2,3]`|`1+2i`?|
-|`"abc"`  |`"abcabc"`|???|???|???|???|`"a1b1c1"`?|
-|`'a'`    |`"aa"`|???|???|???|???|`'b'`?|
-|`[1,2,3]`|`[1,2,3,1,2,3]`|???|???|???|???|`[2,3,4]`?|
+|`"abc"`  |`"abcabc"`|???|???|???|`"1abc2abc3"`|`"a1b1c1"`?|
+|`'a'`    |`"aa"`|???|???|???|`1a2a3`|`'b'`?|
+|`[1,2,3]`|`[1,2,3,1,2,3]`|???|`"1abc2abc3"`|`1a2a3`|???|`[2,3,4]`?|
 
 ### / operator
 
