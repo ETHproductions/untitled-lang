@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html>
+    <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+    <title>Operators</title>
+
+<xmp theme="united" style="display:none;">
+#### [Spec](../)
+- **Syntax**
+- [Data types](../types)
+- [Operators](../operators)
+
+**Please note:** This spec is a draft; any detail may change without warning.
+
+### Syntax
+
+The syntax is largely based on CoffeeScript, with some elements from Ruby, Python, and other languages.
+
+<!-- language-all: lang-js -->
+
+    ## I just wanna right down ideas, not provide exact specs, so let's do this learnXinYminutes.com style.
+    ## Double hashes mark a single-line comment.
+    
+    /*
+    This is a multi-line comment.
+    This syntax may be changed in the near future;
+    feel free to suggest an alternative.
+    */
+    
+    ## Everything is an object.
+    
+    
+    ######## Numbers ########
+    
+                 ## .class is a reserved property that returns the type of an object.
+    2.class      ## -> "Int"
+    2.0.class    ## -> "Float"
+                 ## Use floats wherever possible, as they can handle much more precise arithmetic than ints.
+    ## Note that you can't do this:
+    ## 2..class  ## -> SyntaxError: variable class does not exist
+    ## The range operator (..) overrides the property operator (.).
+    
+    ## Other syntax:
+    2e1    ## -> 20
+    2e-1   ## -> 0.2
+    0x22   ## -> 34
+    0o22   ## -> 18
+    0b101  ## -> 5
+    0b.11  ## -> 0.75
+    1x2    ## -> 32 (1x2 = 0x20)
+    1x2.2  ## -> 32 (1x2.2 = 0x22)
+    1i     ## -> 0 + 1i (note: you have to do 1i instead of i, because i could be a variable)
+    
+    
+    ## Basic arithmetic:
+    2 + 2   ## -> 4 (addition)
+    2 - 1   ## -> 1 (subtraction)
+    2 * 3   ## -> 6 (multiplication)
+    3 / 2   ## -> 1.5 (float division)
+    3 // 2  ## -> 1 (integer division)
+    5 % 3   ## -> 2 (modulo)
+    -5 % 3  ## -> 1 (works with negative numbers)
+    2 ** 3  ## -> 8 (exponentiation)
+    3 & 2   ## -> 2 (bitwise and)
+    3 | 2   ## -> 3 (bitwise or)
+    3 ^ 2   ## -> 1 (bitwise xor)
+    
+    ## A full list of operators and their tasks is available at the bottom.
+    
+    
+    ####### Strings ########
+    
+    ## Strings are basically the same as in most other languages.
+    "abc".class  ## -> "String"
+    'abc'.class  ## -> "String"
+    
+    ## You can do string interpolation in single-quote strings:
+    '2 + 2 = #{ 2 + 2 }'  ## -> "2 + 2 = 4"
+    
+    ## To avoid string interpolation, use a backslash or double-quote string:
+    '2 + 2 = \#{ 2 + 2 }' ## -> "2 + 2 = #{ 2 + 2 }"
+    "2 + 2 = #{ 2 + 2 }"  ## -> "2 + 2 = #{ 2 + 2 }"
+    
+    
+    ######## Chars ########
+    
+    ## Chars are basically strings, but can be directly manipulated with numbers.
+    ## They are initialized as a single char between single quotes:
+    'a'.class    ## -> "Char"
+    
+    ## Backslashes can be used:
+    '\''.class   ## -> "Char"
+    '\\'.class   ## -> "Char"
+    '\x7F'.class ## -> "Char"
+    
+    
+    ######## Arrays ########
+    
+    [].class         ## -> "Array"
+    [1, 2, 3].len    ## -> 3
+    [1, 2, 3].rev    ## -> [3, 2, 1]
+    [1, 2] + [3, 4]  ## -> [1, 2, 3, 4]
+    
+    
+    ######## Assignments ########
+    
+    ## You can assign a variable with the = operator:
+    a = 2
+    print a  ## 2
+    
+    ## You can also assign a variable to a dynamic value with the => operator.
+    ## These are called "evaluated variables", or "evars" for short.
+    b => a += 1
+    print b  ## 3
+    print b  ## 4
+    a = 10
+    print b  ## 11
+    print b  ## 12
+    
+    
+    ######## Lambdas ########
+    
+    ## Lambdas use the -> operator:
+    
+    square = (num) -> num ** 2
+    print square(5)  ## 25
+    
+    
+    ######## Functions ########
+    
+    ## Full functions look like one of these (please vote which one):
+    
+    function times2 (num) {
+        num * 2  ## Without explicit return, the last expression is returned?
+    }
+    
+    function times2 (num):
+        num * 2
+    
+    function times2 (num) ->
+        num * 2
+    
+    def times2 (num):
+        num * 2
+    
+    
+    ######## Instance properties ########
+    
+    Number#sqrt => this ** .5  ## You can use `this` in evars and lambdas
+    print 25.sqrt    ## 5
+    
+    String#join = (joiner) -> this.chars.join(joiner)  ## Could also be -> this / "" * joiner
+    print "Joined!".join(" ")  ## "J o i n e d !"
+    
+    
+    
+    
+    ######## Binary operators ########
+    ######## Please look below the codeblock for more detail.
+    
+    #### + operator
+    ## Addition
+    1 + 1        ## 2
+    1 + 1i       ## 1 + 1i
+    1 + 'a'      ## 'b'
+    
+    ## Concatenation
+    1 + "abc"    ## "1abc"
+    "ab" + "cd"  ## "abcd"
+    "ab" + 'c'   ## "abc"
+    ' ' + '!'    ## either " !" or 'A' (which one?)
+    
+    ## Pushing/unshifting
+    1 + [2, 3]   ## [1, 2, 3]
+    [2, 3] + 1   ## [2, 3, 1]
+    "ab" + [1]   ## ["ab", 1]
+    'a' + [1]    ## ['a', 1]
+    
+    
+    #### - operator
+    ## Subtraction
+    2 - 1        ## 1
+    2 - 1i       ## 2 - 1i
+    'b' - 1      ## 'a'
+    
+    ## Slicing
+    "abc" - 1    ## "ab"
+    "abc" - -1   ## "c"
+    1 - "abc"    ## "bc"
+    -1 - "abc"   ## "a"
+                 ## Same with arrays
+    
+    ## Item removal
+    "abc" - "b"  ## "ac"
+    "abcde" - /[b-d]/  ## "acde"
+    "abcde" - /[b-d]/g ## "ae"
+    [1,2,3]-[2]  ## [1, 3]
+    
+    
+    #### * operator
+    ## Multiplication
+    2 * 3        ## 6
+    2 * 3i       ## 0 + 6i
+    2i * 3i      ## -6
+    
+    ## Repetition
+    "abc" * 2    ## "abcabc"
+    5 * 'a'      ## "aaaaa"
+    [1, 2] * 3   ## [1, 2, 1, 2, 1, 2]
+    
+    ## Joining
+    [1, 2] * ' ' ## "1 2"
+    "+" * [1, 2] ## "1+2"
+    
+    ## Unassigned
+    "abc" * "def"
+    "abc" * 'd'
+    "abc" * [1, 2]
+    'a' * 'b'
+    [1, 2] * [3]
+    
+    
+    #### / operator
+    ## Division
+    3 / 2        ## 1.5
+    3 / 2i       ## 0 - 1.5i
+    'a' / 2      ## ??? (maybe 48.5)
+    200 / 'a'    ## ??? (maybe 200/97)
+    
+    ## Splitting
+    "abcde"/"b"  ## ["a", "cde"]
+    "abcde"/'c'  ## ["ab", "de"]
+    "abcde" / /[b-d]/  ## ["a", "cde"]
+    "abcde" / /[b-d]/g ## ["a", "", "", "e"]
+    "abcde" / /[b-d]+/ ## ["a", "e"]
+    "abcde" / 2  ## ["ab", "cd", "e"]
+    [1,2,3] / 2  ## [[1, 2], [3]]
+    2 / "abcde"  ## ["ace", "bd"]
+    2 / [1,2,3]  ## [[1, 3], [2]]
+    
+    ## Unassigned
+    "abc" / [1, 2, 3]
+    [1, 2, 3] / "abc"
+    [1, 2] / [3, 4]
+    'a' / "abc"
+    'a' / [1, 2, 3]
+    [1, 2, 3] / 'a'
+    [1, 2, 3] / "abc"
+    
+    
+    #### // operator
+    ## Integer division
+    3 // 2       ## 1
+    3 // 2i      ## 0 - 1i
+    'a' // 2     ## ??? (maybe 32)
+    200 // 'a'   ## ??? (maybe 2)
+    
+    ## Slicing
+    "abcde" // 2 ## ["ab", "cd"]
+    [1,2,3] // 2 ## [[1, 2]]
+    2 // "abcde" ## ["ab", "bc", "cd", "de"]
+    2 // [1,2,3] ## [[1, 2], [2, 3]]
+    
+    ## Unassigned
+    "abcde" // 'a'
+    [1, 2, 3] // 'a'
+    [1, 2, 3] // "abcde"
+    'a' // "abcde"
+    'a' // [1, 2, 3]
+    "abcde" // [1, 2, 3]
+    
+    
+    #### % operator
+    ## Modulo
+    5 % 3        ## 2
+    -5 % 3       ## -1
+    5 % 3i       ## 0 + 0i
+    5i % 3i      ## 0 + 2i
+    (5 + 4i) % (3 + 3i)  ## 2 + 1i
+    'a' % 2      ## ??? (maybe 1)
+    
+    ## String formatting
+    "a%nz" % 4   ## "a4z"
+    "a%nz" % 'a' ## "a97z"
+    "a%sz" % "^" ## "a^z"
+    "a%sz" % '-' ## "a-z"
+    ## And %b, %o, %x, etc., but I won't go into detail right now
+    
+    ## Unassigned
+    4 % "abc"
+    4 % 'a'
+    4 % [1, 2, 3]
+    "abc" % [1, 2, 3]
+    'a' % "abc"
+    'a' % 'b'
+    'a' % [1, 2, 3]
+    [1, 2, 3] % 4
+    [1, 2, 3] % 'a'
+    [1, 2, 3] % "abc"
+    [1, 2, 3] % [7, 8, 9]
+    
+## Operators
+
+### + operator
+
+- Array/String + Function: inverse filter
+- Array + Array: concat (this could be Array + Any, but that would be confusing because you then can't push an array [although `Array + [Any]` still does the trick either way])
+- String + Any: concat
+- Char/Number + Number: add
+    
+|v `+` >  |`1`|`1i`|`"abc"`|`'a'`|`[4,5]`|`x->['a',1]~=x`|
+|---      |---|---|---|---|---|---|
+|`1`      |`2`|`1+1i`|`"1abc"`|`'b'`|???|???|
+|`1i`     |`1+1i`|`0+2i`|`"0+1iabc"`?|???|???|???|
+|`"abc"`  |`"abc1"`|`"abc0+1i"`?|`"abcabc"`|`"abca"`|???|`"a"`|
+|`'a'`    |`'b'`|???|`"aabc"`|`"aa"`?|???|???|
+|`[1,2,3]`|???|???|???|???|`[1,2,3,4,5]`|`[1]`|
+
+### - operator
+    
+- Array/String - Function: filter
+- Array/String - Number: slice
+- Array - Array: setwise subtraction
+- String - String/Char: remove instances of B from A
+- Char/Number - Number: subtract
+    
+|v `-` >  |`1`|`-1`|`1i`|`"abc"`|`'b'`|`[1,2,3]`|`x->['a',1]~=x`|
+|---      |---|---|---|---|---|---|---|
+|`2`      |`1`|`3`|`2-1i`|`"c"`|???|`[3]`|???|
+|`-2`     |`-3`|`1`|`-2-1i`|`"ab"`|???|`[1,2]`|???|
+|`2i`     |`-1+2i`|`1+2i`|`0+2i`|???|???|???|???|
+|`"abc"`  |`"c"`|`"ab"`|???|`""`|`"ac"`|???|`"bc"`|
+|`'b'`    |`'a'`|`'c'`|???|???|???|???|???|
+|`[1,2,3]`|`[1,2]`|`[3]`|???|???|???|`[]`|`[2,3]`|
+
+### * operator
+
+- Array/String * Function: map
+- Array/String/Char * Number: repeat
+- Number * Number: multiply
+    
+|v `*` >  |`2`|`2i`|`"abc"`|`'a'`|`[1,2,3]`|`x->x+1`|
+|---      |---|---|---|---|---|---|
+|`2`      |`4`|`0+4i`|`"abcabc"`|`"aa"`|`[1,2,3,1,2,3]`|`3`?|
+|`2i`     |`0+4i`|`-4`|???|???|`[0+1i,1,2,3]`|`1+2i`?|
+|`"abc"`  |`"abcabc"`|???|???|???|???|`"a1b1c1"`?|
+|`'a'`    |`"aa"`|???|???|???|???|`'b'`?|
+|`[1,2,3]`|`[1,2,3,1,2,3]`|???|???|???|???|`[2,3,4]`?|
+
+### / operator
+
+- Array/String / Function: reduce
+- Array/String / Number: substrings
+- Number / Array/String: every Nth char
+- String / String/Char: split
+- Char/Number / Char/Number: divide
+    
+|v `/` >  |`2`|`2i`|`"abc"`|`'a'`|`[1,2,3]`|`(x,y)->x+0+y`|
+|---      |---|---|---|---|---|---|
+|`2`      |`1`|`0-1i`|`["ac","b"]`|`.02061856`?|`[[1,3],[2]]`|???|
+|`2i`     |`0+1i`|`1`|???|???|???|???|
+|`"abc"`  |`["ab","c"]`|???|`["",""]`|`["","bc"]`|???|`"a0b0c"`|
+|`'a'`    |`48.5`?|???|???|???|???|???|
+|`[1,2,3]`|`[[1,2],[3]]`|???|???|???|???|`6`|
+
+### // operator
+
+- Array/String / Function: cumulative reduce
+- Array/String / Number: full-length substrings
+- Number / Array/String: overlapping substrings
+- String / String/Char: non-empty split
+- Char/Number / Char/Number: divide
+    
+|v `//` > |`2`|`2i`|`"abc"`|`'a'`|`[1,2,3]`|`(x,y)->x+0+y`|
+|---      |---|---|---|---|---|---|
+|`2`      |`1`|`0-1i`|`["ab","bc"]`|`0`?|`[[1,2],[2,3]]`|???|
+|`2i`     |`0+1i`|`1`|???|???|???|???|
+|`"abc"`  |`["ab"]`|???|[]|["bc"]|???|`["a0b","a0b0c"]`|
+|`'a'`    |`48`?|???|???|???|???|???|
+|`[1,2,3]`|`[[1,2]]`|???|???|???|???|`[3,6]`|
+
+### % operator
+
+- String % Any: formatting
+- Number/Char % Number: modulo
+    
+|v `%` >  |`3`|`-3`|`3i`|`"abc"`|`'b'`|`[1,2,3]`|`x->['a',1]~=x`|
+|---      |---|---|---|---|---|---|---|
+|`5`      |`2`|`2` or `-1`?|`0+2i`|`"c"`|???|???|???|
+|`-5`     |`1`|`1` or `-2`?|`0`?|`"ab"`|???|???|???|
+|`5i`     |`-1+2i`|`1+2i`|`0+2i`|???|???|???|???|
+|`"a%n%sz"`|`"a3%sz"`|`"a-3%sz"`|`"a0+3i%sz"`|`"a%nabcz"`|`"a98%sz"`|???|???|
+|`'b'`    |`2`?|`2`?|`0`?|???|???|???|???|
+|`[1,2,3]`|???|???|???|???|???|???|???|
+
+### ** operator
+
+- Array/String ** Any: Cartesian power
+- Number ** Number: power
+    
+|v `**` >  |`2`|`2i`|`"abc"`|`'a'`|`[1,2,3]`|`x->x+1`|
+|---      |---|---|---|---|---|---|
+|`2`      |`4`|???|???|???|???|???|
+|`2i`     |`-4`|???|???|???|???|???|
+|`"abc"`  |`["aa","ab",...,"cc"]`|???|`["aa","ab",...,"cc"]`|`["aa","ba","ca"]`|`["1abc","2abc","3abc"]`|???|
+|`'a'`    |???|???|`["aa","ab","ac"]`|???|???|???|
+|`[1,2,3]`|`[[1,1],[1,2],...,[3,3]]`|???|???|???|`[[1,1],[1,2],...,[3,3]]`|???|
+
+### & operator
+    
+- Array & Array: setwise and
+- String & String/Char: setwise and
+- Number/Char & Number/Char: bitwise and
+    
+|v `&` >  |`1`|`1i`|`"abc"`|`'a'`|`[1,2]`|`x->['a',1]~=x`|
+|---      |---|---|---|---|---|---|
+|`3`      |`1`|`0`|???|`2`|???|???|
+|`3i`     |`0`|`0+1i`|???|???|???|???|
+|`"baz"`  |???|???|`"ba"`|`"a"`?|???|???|
+|`'a'`    |`1`?|???|???|`'a'` or `97`?|???|???|
+|`[1,3,5]`|???|???|???|???|`[1]`|???|
+
+### | operator
+    
+- Array | Array: setwise or
+- String | String/Char: setwise or
+- Number/Char | Number/Char: bitwise or
+    
+|v `or` >  |`1`|`1i`|`"abc"`|`'a'`|`[1,2]`|`x->['a',1]~=x`|
+|---      |---|---|---|---|---|---|
+|`3`      |`3`|`3+1i`|???|`'c'`|???|???|
+|`3i`     |`1+3i`|`0+3i`|???|???|???|???|
+|`"baz"`  |???|???|`"bazc"`|`"baz"`|???|???|
+|`'b'`    |`'c'`|???|`"bac"`|`'c'`|???|???|
+|`[1,3,5]`|???|???|???|???|`[1,3,5,2]`|???|
+
+### ^ operator
+    
+- Array ^ Array: setwise xor
+- String ^ String/Char: setwise xor
+- Number/Char ^ Number/Char: bitwise xor
+    
+|v `^` >  |`1`|`1i`|`"abc"`|`'a'`|`[1,2]`|`x->['a',1]~=x`|
+|---      |---|---|---|---|---|---|
+|`3`      |`2`|`3+1i`|???|`'b'`|???|???|
+|`3i`     |`1+3i`|`0+2i`|???|???|???|???|
+|`"baz"`  |???|???|`"zc"`|`"bz"`|???|???|
+|`'b'`    |`1`?|???|`"ac"`|`3` or `'\x03'`?|???|???|
+|`[1,3,5]`|???|???|???|???|`[3,5,2]`|???|
+    
+</xmp>
+
+    <script src="../../strapdown/strapdown.js"></script>
+</html>
