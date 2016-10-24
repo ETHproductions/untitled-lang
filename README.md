@@ -1,10 +1,5 @@
-# Crayon
+# untitled-lang
 
-Crayon is a stack-based programming language based on a 2-dimensional output canvas of text. More spec will come soon, then an interpreter sometime later.
+An untitled language inpsired by CoffeeScript, Ruby, Cheddar, and several others.
 
-## Spec
-- [Data types](https://github.com/ETHproductions/Crayon/blob/master/docs/Data%20types.md)
-- [Operators](https://github.com/ETHproductions/Crayon/blob/master/docs/Operators.md)
-- [Encoding](https://github.com/ETHproductions/Crayon/blob/master/docs/Encoding.md)
-
-Suggestions are welcome for anything.
+- [Syntax ideas](https://ethproductions.github.io/untitled-lang/docs/syntax)
